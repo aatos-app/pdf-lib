@@ -572,6 +572,31 @@ export default class PDFPage {
   }
 
   /**
+   * Translate this page's content and annotations. In some scenarios, the position of annotations
+   * matter (e.g. form filled with FreeText annotations). If the [[translateContent]] function is used in these cases,
+   * the position of the annotations relative to the text will change. To take this into account, you can use [translate] function.
+   * For example:
+   * ```js
+   * // Move the page's content and annotations from the lower-left corner of the page
+   * // to the top-right corner.
+   * page.translate(50, 50)
+   * ```
+   * @param x The new position on the x-axis for this page's content.
+   * @param y The new position on the y-axis for this page's content.
+   */
+  translate(x: number, y: number): void {
+    assertIs(x, 'x', ['number']);
+    assertIs(y, 'y', ['number']);
+    this.translateContent(x, y);
+    const annots = this.node.Annots();
+    if (!annots) return;
+    for (let idx = 0; idx < annots.size(); idx++) {
+      const annot = annots.lookup(idx);
+      if (annot instanceof PDFDict) this.translateAnnot(annot, x, y);
+    }
+  }
+
+  /**
    * Scale the size, content, and annotations of a page.
    *
    * For example:
@@ -1662,6 +1687,28 @@ export default class PDFPage {
       for (let idx = 0, len = inkLists.size(); idx < len; idx++) {
         const arr = inkLists.lookup(idx);
         if (arr instanceof PDFArray) arr.scalePDFNumbers(x, y);
+      }
+    }
+  }
+
+  /**
+   * move annotations
+   * @param annot annot
+   * @param x The new position on the x-axis for this page's content.
+   * @param y The new position on the y-axis for this page's content.
+   */
+  private translateAnnot(annot: PDFDict, x: number, y: number) {
+    const selectors = ['RD', 'CL', 'Vertices', 'QuadPoints', 'L', 'Rect'];
+    for (let idx = 0, len = selectors.length; idx < len; idx++) {
+      const list = annot.lookup(PDFName.of(selectors[idx]));
+      if (list instanceof PDFArray) list.translatePDFNumbers(x, y);
+    }
+
+    const inkLists = annot.lookup(PDFName.of('InkList'));
+    if (inkLists instanceof PDFArray) {
+      for (let idx = 0, len = inkLists.size(); idx < len; idx++) {
+        const arr = inkLists.lookup(idx);
+        if (arr instanceof PDFArray) arr.translatePDFNumbers(x, y);
       }
     }
   }

@@ -1,8 +1,7 @@
-## Forked by [Cantoo](https://cantoo.fr)
+## Forked by [Aatos](https://aatos.app) from a package forked by [Cantoo](https://cantoo.fr)
 
-This fork adds the support for svg to the pdf-lib project. Until pdf-lib project gets a better maintainance, we will maintain this project as long as we need it but cannot guarantee the support for issues too far from our own roadmap.
-
-Install with: `npm install @cantoo/pdf-lib`
+This fork adds some features from the open PRs of the original repo by Hopding ([pdf-lib](https://www.npmjs.com/package/pdf-lib)), such as:
+- Page translate function (https://github.com/Hopding/pdf-lib/pull/1379)
 
 <hr/>
 
