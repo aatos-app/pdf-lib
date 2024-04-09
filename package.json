@@ -99,7 +99,8 @@
     "@pdf-lib/upng": "^1.0.1",
     "color": "^4.2.3",
     "node-html-better-parser": "^1.4.0",
-    "pako": "^1.0.11"
+    "pako": "^1.0.11",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@pdf-lib/fontkit": "^1.1.0",
@@ -121,7 +122,6 @@
     "rimraf": "^5.0.5",
     "rollup": "^4.9.6",
     "ts-jest": "^29.0",
-    "tslib": "^2.6.2",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.9.5"
